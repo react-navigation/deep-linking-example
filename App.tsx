@@ -3,7 +3,8 @@ import { View, Text, Button } from "react-native";
 import { useLinking, NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Linking } from "expo";
+import * as Linking from 'expo-linking'
+
 
 const prefix = Linking.makeUrl("/");
 const config = {
@@ -83,7 +84,9 @@ export default function App() {
     return (
       <View
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-      ></View>
+      >
+        This is the Settings Page.
+      </View>
     );
   }
 
