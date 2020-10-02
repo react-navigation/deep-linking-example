@@ -3,7 +3,6 @@
     "name": "DeepLinkingBlog",
     "slug": "DeepLinkingBlog",
     "privacy": "public",
-    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android",
@@ -17,6 +16,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "scheme": "com.github.react-navigation.deep-linking-example",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
