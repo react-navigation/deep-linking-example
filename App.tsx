@@ -1,64 +1,45 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
-import { useLinking, NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, LinkingOptions, useLinkTo } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import * as Linking from 'expo-linking'
-
+import * as Linking from "expo-linking";
 
 const prefix = Linking.makeUrl("/");
-const config = {
-  HomeStack: {
-    path: "stack",
-    initialRouteName: "Profile",
+const linking: LinkingOptions = {
+  prefixes: [prefix],
+  config: {
     screens: {
-      Home: "home",
-      Profile: {
-        path: "user/:id/:age",
-        parse: {
-          id: id => `there, ${id}`,
-          age: Number
-        }
-      }
-    }
+      HomeStack: {
+        path: "stack",
+        initialRouteName: "Home",
+        screens: {
+          Home: "home",
+          Profile: {
+            path: "user/:id/:age",
+            parse: {
+              id: id => `there, ${id}`,
+              age: Number,
+            },
+            stringify: {
+              id: id => id.replace("there, ", ""),
+            },
+          },
+        },
+      },
+      Settings: "settings",
+    },
   },
-  Settings: "settings"
 };
+
 export default function App() {
-  const ref = React.useRef();
-
-  const { getInitialState } = useLinking(ref, {
-    prefixes: [prefix],
-    config
-  });
-
-  const [isReady, setIsReady] = React.useState(false);
-  const [initialState, setInitialState] = React.useState();
-
-  React.useEffect(() => {
-    getInitialState()
-      .catch(() => {})
-      .then(state => {
-        if (state !== undefined) {
-          setInitialState(state);
-        }
-
-        setIsReady(true);
-      });
-  }, [getInitialState]);
-
-  if (!isReady) {
-    return null;
-  }
-
   function Home({ navigation }) {
+    const linkTo = useLinkTo();
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Button
           title="Go to Wojciech's profile"
-          onPress={() =>
-            navigation.navigate("Profile", { id: "Wojciech", age: 22 })
-          }
+          onPress={() => linkTo("/stack/user/Wojciech/22")}
         />
         <Button
           title="Go to unknown profile"
@@ -82,10 +63,8 @@ export default function App() {
 
   function Settings() {
     return (
-      <View
-        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-      >
-        This is the Settings Page.
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>This is the Settings Page.</Text>
       </View>
     );
   }
@@ -103,7 +82,7 @@ export default function App() {
   const MyTabs = createBottomTabNavigator();
 
   return (
-    <NavigationContainer initialState={initialState} ref={ref}>
+    <NavigationContainer linking={linking}>
       <MyTabs.Navigator>
         <MyTabs.Screen name="HomeStack" component={HomeStack} />
         <MyTabs.Screen name="Settings" component={Settings} />
