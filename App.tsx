@@ -32,55 +32,55 @@ const linking: LinkingOptions = {
   },
 };
 
+function Home({ navigation }) {
+  const linkTo = useLinkTo();
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Button
+        title="Go to Wojciech's profile"
+        onPress={() => linkTo("/stack/user/Wojciech/22")}
+      />
+      <Button
+        title="Go to unknown profile"
+        onPress={() => navigation.navigate("Profile")}
+      />
+    </View>
+  );
+}
+
+function Profile({ route }) {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Hello {route.params?.id || "Unknown"}!</Text>
+      <Text>
+        Type of age parameter is{" "}
+        {route.params?.age ? typeof route.params.age : "undefined"}
+      </Text>
+    </View>
+  );
+}
+
+function Settings() {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>This is the Settings Page.</Text>
+    </View>
+  );
+}
+
+const HomeStack = () => {
+  const MyStack = createStackNavigator();
+
+  return (
+    <MyStack.Navigator>
+      <MyStack.Screen name="Home" component={Home} />
+      <MyStack.Screen name="Profile" component={Profile} />
+    </MyStack.Navigator>
+  );
+};
+const MyTabs = createBottomTabNavigator();
+
 export default function App() {
-  function Home({ navigation }) {
-    const linkTo = useLinkTo();
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Button
-          title="Go to Wojciech's profile"
-          onPress={() => linkTo("/stack/user/Wojciech/22")}
-        />
-        <Button
-          title="Go to unknown profile"
-          onPress={() => navigation.navigate("Profile")}
-        />
-      </View>
-    );
-  }
-
-  function Profile({ route }) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Hello {route.params?.id || "Unknown"}!</Text>
-        <Text>
-          Type of age parameter is{" "}
-          {route.params?.age ? typeof route.params.age : "undefined"}
-        </Text>
-      </View>
-    );
-  }
-
-  function Settings() {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>This is the Settings Page.</Text>
-      </View>
-    );
-  }
-
-  const HomeStack = () => {
-    const MyStack = createStackNavigator();
-
-    return (
-      <MyStack.Navigator>
-        <MyStack.Screen name="Home" component={Home} />
-        <MyStack.Screen name="Profile" component={Profile} />
-      </MyStack.Navigator>
-    );
-  };
-  const MyTabs = createBottomTabNavigator();
-
   return (
     <NavigationContainer linking={linking}>
       <MyTabs.Navigator>
