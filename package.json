@@ -8,28 +8,28 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@react-native-community/masked-view": "^0.1.6",
-    "@react-navigation/bottom-tabs": "^5.0.0",
-    "@react-navigation/native": "^5.0.0",
-    "@react-navigation/stack": "^5.0.0",
-    "expo": "~36.0.0",
-    "expo-linking": "^1.0.3",
-    "react": "~16.9.0",
-    "react-dom": "~16.9.0",
-    "react-native": "~0.61.4",
-    "react-native-gesture-handler": "^1.5.6",
-    "react-native-reanimated": "^1.7.0",
-    "react-native-safe-area-context": "^0.7.2",
-    "react-native-screens": "2.0.0-alpha.12",
-    "react-native-unimodules": "~0.7.0",
-    "react-native-web": "~0.11.7"
+    "@react-native-community/masked-view": "0.1.10",
+    "@react-navigation/bottom-tabs": "^5.9.1",
+    "@react-navigation/native": "^5.7.5",
+    "@react-navigation/stack": "^5.9.2",
+    "expo": "^39.0.0",
+    "expo-linking": "^1.0.4",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-native": "0.63.3",
+    "react-native-gesture-handler": "~1.7.0",
+    "react-native-reanimated": "~1.13.0",
+    "react-native-safe-area-context": "3.1.4",
+    "react-native-screens": "~2.10.1",
+    "react-native-unimodules": "~0.11.0",
+    "react-native-web": "~0.13.7"
   },
   "devDependencies": {
-    "@types/react": "~16.9.0",
-    "@types/react-native": "~0.60.23",
-    "@babel/core": "^7.0.0",
-    "babel-preset-expo": "~8.0.0",
-    "typescript": "~3.6.3"
+    "@babel/core": "^7.11.6",
+    "@types/react": "~16.9.35",
+    "@types/react-native": "~0.63.2",
+    "babel-preset-expo": "^8.3.0",
+    "typescript": "~3.9.2"
   },
   "private": true
 }
