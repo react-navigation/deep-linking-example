@@ -1,12 +1,33 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Text, Button } from "react-native";
-import { NavigationContainer, LinkingOptions, useLinkTo } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  NavigationContainer,
+  LinkingOptions,
+  useLinkTo,
+  NavigatorScreenParams,
+} from "@react-navigation/native";
+import {
+  createStackNavigator,
+  StackScreenProps,
+} from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as Linking from "expo-linking";
 
+type RootStackParamList = {
+  HomeStack: NavigatorScreenParams<HomeStackParamList>;
+  Settings: undefined;
+};
+
+type HomeStackParamList = {
+  Home: undefined;
+  Profile: {
+    id: string;
+    age?: number;
+  };
+};
+
 const prefix = Linking.makeUrl("/");
-const linking: LinkingOptions = {
+const linking: LinkingOptions<RootStackParamList> = {
   prefixes: [prefix],
   config: {
     screens: {
@@ -18,11 +39,11 @@ const linking: LinkingOptions = {
           Profile: {
             path: "user/:id/:age",
             parse: {
-              id: id => `there, ${id}`,
+              id: (id) => `there, ${id}`,
               age: Number,
             },
             stringify: {
-              id: id => id.replace("there, ", ""),
+              id: (id) => id.replace("there, ", ""),
             },
           },
         },
@@ -32,8 +53,10 @@ const linking: LinkingOptions = {
   },
 };
 
-function Home({ navigation }) {
+type HomeProps = StackScreenProps<HomeStackParamList, "Home">;
+const Home: React.FC<HomeProps> = ({ navigation }) => {
   const linkTo = useLinkTo();
+
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Button
@@ -46,9 +69,10 @@ function Home({ navigation }) {
       />
     </View>
   );
-}
+};
 
-function Profile({ route }) {
+type ProfileProps = StackScreenProps<HomeStackParamList, "Profile">;
+const Profile: React.FC<ProfileProps> = ({ route }) => {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text>Hello {route.params?.id || "Unknown"}!</Text>
@@ -58,18 +82,20 @@ function Profile({ route }) {
       </Text>
     </View>
   );
-}
+};
 
-function Settings() {
+type SettingsProps = StackScreenProps<RootStackParamList, "Settings">;
+const Settings: React.FC<SettingsProps> = () => {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text>This is the Settings Page.</Text>
     </View>
   );
-}
+};
 
-const HomeStack = () => {
-  const MyStack = createStackNavigator();
+type HomeStackProps = StackScreenProps<RootStackParamList, "HomeStack">;
+const HomeStack: React.FC<HomeStackProps> = () => {
+  const MyStack = createStackNavigator<HomeStackParamList>();
 
   return (
     <MyStack.Navigator>
@@ -78,12 +104,21 @@ const HomeStack = () => {
     </MyStack.Navigator>
   );
 };
-const MyTabs = createBottomTabNavigator();
 
 export default function App() {
+  const MyTabs = createBottomTabNavigator<RootStackParamList>();
+
+  const screenOptions = useMemo(
+    () => ({
+      headerShown: false,
+      tabBarIcon: () => null,
+    }),
+    []
+  );
+
   return (
     <NavigationContainer linking={linking}>
-      <MyTabs.Navigator>
+      <MyTabs.Navigator screenOptions={screenOptions}>
         <MyTabs.Screen name="HomeStack" component={HomeStack} />
         <MyTabs.Screen name="Settings" component={Settings} />
       </MyTabs.Navigator>
